@@ -1,0 +1,105 @@
+/* -------------------  ESTILO GLOBAL  ------------------- */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+
+html, body{
+  font-family:'Segoe UI',sans-serif;
+}
+
+/* ----------  CABECERA CON GRADIENTE DIAGONAL  ---------- */
+.gradient-header{
+  width:100%;
+  padding:1.2rem 1.5rem;
+  border-radius:28px;
+  margin-bottom:1rem;
+  color:#000;
+  background:linear-gradient(135deg,#ffffff 0%,#fbd4d4 30%,#d71920 100%);
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Modo oscuro sobre-escribe el gradiente */
+body.dark-mode .gradient-header{
+  background:linear-gradient(135deg,#333 0%,#2b0003 100%);
+  color:#fff;
+}
+
+/* ----------  TARJETAS KPI  (bordes, sombreado, banda) ---------- */
+.kpi-card{
+  position:relative;
+  background-color:#fff;
+  border-radius:28px;                 /* borde XXL */
+  padding:1rem;
+  margin-bottom:1rem;
+  text-align:center;
+  box-shadow:0 6px 14px rgba(0,0,0,.06);      /* sombra base (más profunda) */
+  transform:perspective(800px) translateZ(0);
+  overflow:hidden;
+  opacity:0;                          /* para fade-in */
+  animation:fadeIn 0.4s forwards;
+}
+
+/* Zoom + tilt y sombra grande en hover */
+.kpi-card:hover{
+  transform:perspective(800px) rotateY(4deg) translateZ(10px) scale(1.06);
+  box-shadow:0 14px 24px rgba(0,0,0,.18);
+}
+
+/* Banda degradada */
+.kpi-card::after{
+  content:"";
+  position:absolute;
+  left:0;bottom:0;width:100%;height:6px;
+  background:var(--kpi-grad);
+  transition:height .35s ease;
+  z-index:0;
+}
+.kpi-card:hover::after{height:100%;}
+.kpi-card *{position:relative;z-index:1}
+
+/* Texto e icono se vuelven blancos cuando banda cubre */
+.kpi-card:hover .kpi-title,
+.kpi-card:hover .kpi-value,
+.kpi-card:hover .kpi-icon{color:#fff}
+
+/* Icono */
+.kpi-icon{
+  font-size:2.4rem;
+  line-height:1;
+  margin-bottom:4px;
+  transition:transform .3s,color .35s;
+}
+.kpi-card:hover .kpi-icon{transform:scale(1.15)}
+
+/* Gradientes por color */
+.kpi-red   {--kpi-grad:linear-gradient(90deg,#d71920,#ff6b6b)}
+.kpi-blue  {--kpi-grad:linear-gradient(90deg,#3466ef,#6f9bff)}
+.kpi-green {--kpi-grad:linear-gradient(90deg,#2ca02c,#7bd97b)}
+.kpi-orange{--kpi-grad:linear-gradient(90deg,#ff8800,#ffb347)}
+
+/* ----------  FADE-IN KEYFRAMES  ---------- */
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+
+/* ----------  MODO OSCURO  ---------- */
+body.dark-mode,
+body.dark-mode .stApp,
+body.dark-mode [data-testid="stAppViewContainer"]>.main{
+  background-color:#121212 !important;
+  color:#e0e0e0 !important;
+}
+
+/* tarjetas en oscuro */
+body.dark-mode .kpi-card{
+  background-color:#1e1e1e;
+  box-shadow:0 6px 14px rgba(0,0,0,.4);
+}
+body.dark-mode .kpi-card:hover{
+  box-shadow:0 14px 28px rgba(0,0,0,.6);
+}
+
+/* botones Streamlit en oscuro */
+body.dark-mode .stButton>button{
+  background-color:#d71920 !important;
+  color:#fff;
+}

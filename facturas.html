@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Facturas por Comunidad</title>
+  <script src="https://unpkg.com/papaparse@5.3.0/papaparse.min.js"></script>
+</head>
+<body style="font-family:sans-serif;">
+  <h2>🔍 Buscar comunidad:</h2>
+  <input type="text" id="buscador" placeholder="Ej: ERRREKAL" style="width:100%;padding:10px;margin-bottom:20px;font-size:16px;">
+  <div id="resultados"></div>
+
+  <script>
+    const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAGOYL712xHypDOmkqYwUXZEx4CXv3BBoKrgYE2sOb-q85lzFfXDsRKobZeMbqaF3hp7wXsAI7N6qg/pub?gid=0&single=true&output=csv";
+
+    function crearElementoFactura(comunidad, nombre, enlace) {
+      return `<div style="margin-bottom:12px;padding:10px;border-bottom:1px solid #ddd;">
+                <b>${comunidad}</b><br>
+                📄 ${nombre} 
+                <a href="${enlace}" target="_blank">[Ver]</a>
+              </div>`;
+    }
+
+    function actualizarVista(filas, filtro) {
+      const contenedor = document.getElementById("resultados");
+      contenedor.innerHTML = "";
+      filas.forEach(f => {
+        if (f["Comunidad"].toLowerCase().includes(filtro.toLowerCase())) {
+          contenedor.innerHTML += crearElementoFactura(f["Comunidad"], f["Nombre de Factura"], f["Enlace PDF"]);
+        }
+      });
+    }
+
+    Papa.parse(urlCSV, {
+      download: true,
+      header: true,
+      complete: function(result) {
+        const filas = result.data;
+        actualizarVista(filas, "");
+
+        document.getElementById("buscador").addEventListener("input", e => {
+          actualizarVista(filas, e.target.value);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

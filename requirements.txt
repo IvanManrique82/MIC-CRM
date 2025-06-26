@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+streamlit
+pandas
+plotly
+requests
+openpyxl
+=======
+
+streamlit
+streamlit-multiselect-dropdown
+pandas
+requests
+altair
+openpyxl
+>>>>>>> f75426d (CRM NOTION)
